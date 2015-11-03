@@ -19,10 +19,6 @@ public class BookTo implements IdAware {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -38,4 +34,9 @@ public class BookTo implements IdAware {
     public void setAuthors(String authors) {
         this.authors = authors;
     }
+
+	@Override
+	public void setId(long nextValue) {
+		this.id = nextValue;
+	}
 }

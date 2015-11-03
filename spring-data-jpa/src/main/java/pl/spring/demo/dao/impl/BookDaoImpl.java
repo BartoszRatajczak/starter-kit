@@ -59,4 +59,8 @@ public class BookDaoImpl implements BookDao {
 		ALL_BOOKS.add(new BookTo(5L, "Pan Samochodzik i Fantomas", "Zbigniew Nienacki"));
 		ALL_BOOKS.add(new BookTo(6L, "Zemsta", "Aleksander Fredro"));
 	}
+	
+	/*public Long nextSequence() {
+		return sequence.nextValue(ALL_BOOKS);
+	}*/
 }

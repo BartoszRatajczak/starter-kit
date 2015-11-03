@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import pl.spring.demo.common.Sequence;
-import pl.spring.demo.dao.BookDao;
+import pl.spring.demo.dao.AbstractDao;
 import pl.spring.demo.exception.BookNotNullIdException;
-import pl.spring.demo.to.BookTo;
+import pl.spring.demo.exception.IllegalJoinPointException;
 import pl.spring.demo.to.IdAware;
 
 @Aspect
@@ -20,13 +20,14 @@ public class BookDaoAdvisor {
 	@Autowired
     private Sequence sequence;
 	
-	@Autowired
-	private BookDao bookDao;
-
 	@Before(value = "@annotation(pl.spring.demo.annotation.NullableId)")
     public void before(JoinPoint joinPoint) throws Throwable {
     	checkNotNullId(joinPoint.getArgs()[0]);
-    	((BookTo) joinPoint.getArgs()[0]).setId(sequence.nextValue(bookDao.findAll()));
+    	if (joinPoint.getThis() instanceof AbstractDao<?>) {
+    		((IdAware) joinPoint.getArgs()[0]).setId(sequence.nextValue(((AbstractDao<?>)(joinPoint.getThis())).findAll()));
+    	} else {
+    		throw new IllegalJoinPointException();
+    	}
     }
 
     private void checkNotNullId(Object o) {
