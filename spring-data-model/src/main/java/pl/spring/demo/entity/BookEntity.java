@@ -1,16 +1,16 @@
-package pl.spring.demo.to;
+package pl.spring.demo.entity;
 
-import java.util.List;
+import pl.spring.demo.to.IdAware;
 
-public class BookTo implements IdAware {
+public class BookEntity implements IdAware {
 	private Long id;
 	private String title;
-	private List<AuthorTo> authors;
+	private String authors;
 
-	public BookTo() {
+	public BookEntity() {
 	}
 
-	public BookTo(Long id, String title, List<AuthorTo> authors) {
+	public BookEntity(Long id, String title, String authors) {
 		this.id = id;
 		this.title = title;
 		this.authors = authors;
@@ -34,15 +34,11 @@ public class BookTo implements IdAware {
 		this.title = title;
 	}
 
-	public List<AuthorTo> getAuthors() {
+	public String getAuthors() {
 		return authors;
 	}
 
-	public void setAuthors(List<AuthorTo> authors) {
+	public void setAuthors(String authors) {
 		this.authors = authors;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 }
