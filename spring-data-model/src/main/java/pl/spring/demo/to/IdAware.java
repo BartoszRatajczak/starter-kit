@@ -4,5 +4,5 @@ public interface IdAware {
 
     public Long getId();
 
-	public void setId(long nextValue);
+	public void setId(long id);
 }

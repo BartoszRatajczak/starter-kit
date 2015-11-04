@@ -23,16 +23,21 @@ public class BookDaoAdvisor {
 	@Before(value = "@annotation(pl.spring.demo.annotation.NullableId)")
     public void before(JoinPoint joinPoint) throws Throwable {
     	checkNotNullId(joinPoint.getArgs()[0]);
-    	if (joinPoint.getThis() instanceof AbstractDao<?>) {
-    		((IdAware) joinPoint.getArgs()[0]).setId(sequence.nextValue(((AbstractDao<?>)(joinPoint.getThis())).findAll()));
-    	} else {
-    		throw new IllegalJoinPointException();
-    	}
+    	setId(joinPoint, joinPoint.getTarget());
+    		
     }
 
-    private void checkNotNullId(Object o) {
+	private void checkNotNullId(Object o) {
         if (o instanceof IdAware && ((IdAware) o).getId() != null) {
             throw new BookNotNullIdException();
         }
     }
+	
+	private void setId(JoinPoint joinPoint, Object target) {
+		if (target instanceof AbstractDao<?>) {
+			((IdAware) joinPoint.getArgs()[0]).setId(sequence.nextValue(((AbstractDao<?>) target).findAll()));
+		} else {
+			throw new IllegalJoinPointException();
+		}
+	}
 }
