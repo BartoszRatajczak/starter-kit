@@ -32,7 +32,6 @@ public class BookEntityToBookTo implements Converter<BookEntity, BookTo> {
 				authorsList.add(new AuthorTo(id, authors[i + 1], authors[i + 2]));
 			}
 		}
-//		bookTo = new BookTo(2L, bookEntity.getTitle(), authorsList);
 		bookTo = new BookTo(bookEntity.getId(), bookEntity.getTitle(), authorsList);
 		return bookTo;
 	}

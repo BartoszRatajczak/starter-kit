@@ -54,7 +54,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookTo saveBook(BookTo book) {
-    	System.out.println(bookToConverter);
+    	bookEntityConverter = new BookEntityToBookTo();
+    	bookToConverter = new BookToToBookEntity();
     	BookEntity bookEntity = bookDao.save(bookToConverter.convert(book));
 		return bookEntityConverter.convert(bookEntity);
     }

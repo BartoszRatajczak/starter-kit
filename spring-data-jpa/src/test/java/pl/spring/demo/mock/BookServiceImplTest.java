@@ -2,9 +2,6 @@ package pl.spring.demo.mock;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -12,10 +9,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import pl.spring.demo.converter.BookEntityToBookTo;
 import pl.spring.demo.dao.BookDao;
 import pl.spring.demo.entity.BookEntity;
 import pl.spring.demo.service.impl.BookServiceImpl;
-import pl.spring.demo.to.AuthorTo;
 import pl.spring.demo.to.BookTo;
 
 public class BookServiceImplTest {
@@ -24,6 +21,8 @@ public class BookServiceImplTest {
     private BookServiceImpl bookService;
     @Mock
     private BookDao bookDao;
+    
+    private BookEntityToBookTo bookEntityConverter;
 
     @Before
     public void setUpt() {
@@ -33,14 +32,11 @@ public class BookServiceImplTest {
     @Test
     public void testShouldSaveBook() {
         // given
+    	bookEntityConverter = new BookEntityToBookTo();
         BookEntity book = new BookEntity(null, "title", "10 authorFirstName authorLastName");
-        List<AuthorTo> authorList = new ArrayList<AuthorTo>();
-        authorList.add(new AuthorTo(10L, "authorFirstName", "authorLastName"));
-        final BookTo bookTo = new BookTo(22L, "title", authorList); // change 22 to null
-        //BookTo bookTo = new BookTo(22L, "", new ArrayList<>());
         Mockito.when(bookDao.save(book)).thenReturn(new BookEntity(1L, "title", "10 authorFirstName authorLastName"));
         // when
-        BookTo result = bookService.saveBook(bookTo);
+        BookTo result = bookService.saveBook(bookEntityConverter.convert(book));
         // then
         Mockito.verify(bookDao).save(book);
         assertEquals(1L, result.getId().longValue());
