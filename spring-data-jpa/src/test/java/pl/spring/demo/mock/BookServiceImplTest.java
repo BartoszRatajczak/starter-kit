@@ -1,24 +1,23 @@
 package pl.spring.demo.mock;
-/**
- * @COPYRIGHT (C) 2015 Schenker AG
- *
- * All rights reserved
- */
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.*;
-import pl.spring.demo.dao.BookDao;
-import pl.spring.demo.service.impl.BookServiceImpl;
-import pl.spring.demo.to.BookTo;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * TODO The class BookServiceImplTest is supposed to be documented...
- *
- * @author AOTRZONS
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import pl.spring.demo.dao.BookDao;
+import pl.spring.demo.entity.BookEntity;
+import pl.spring.demo.service.impl.BookServiceImpl;
+import pl.spring.demo.to.AuthorTo;
+import pl.spring.demo.to.BookTo;
+
 public class BookServiceImplTest {
 
     @InjectMocks
@@ -34,10 +33,14 @@ public class BookServiceImplTest {
     @Test
     public void testShouldSaveBook() {
         // given
-        BookTo book = new BookTo(null, "title", "author");
-        Mockito.when(bookDao.save(book)).thenReturn(new BookTo(1L, "title", "author"));
+        BookEntity book = new BookEntity(null, "title", "10 authorFirstName authorLastName");
+        List<AuthorTo> authorList = new ArrayList<AuthorTo>();
+        authorList.add(new AuthorTo(10L, "authorFirstName", "authorLastName"));
+        final BookTo bookTo = new BookTo(22L, "title", authorList); // change 22 to null
+        //BookTo bookTo = new BookTo(22L, "", new ArrayList<>());
+        Mockito.when(bookDao.save(book)).thenReturn(new BookEntity(1L, "title", "10 authorFirstName authorLastName"));
         // when
-        BookTo result = bookService.saveBook(book);
+        BookTo result = bookService.saveBook(bookTo);
         // then
         Mockito.verify(bookDao).save(book);
         assertEquals(1L, result.getId().longValue());

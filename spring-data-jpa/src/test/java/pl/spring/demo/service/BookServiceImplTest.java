@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.spring.demo.exception.BookNotNullIdException;
 import pl.spring.demo.to.BookTo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -45,8 +46,7 @@ public class BookServiceImplTest {
     @Test(expected = BookNotNullIdException.class)
     public void testShouldThrowBookNotNullIdException() {
         // given
-        final BookTo bookToSave = new BookTo();
-        bookToSave.setId(22L);
+        final BookTo bookToSave = new BookTo(22L, "", new ArrayList<>());
         // when
         bookService.saveBook(bookToSave);
         // then

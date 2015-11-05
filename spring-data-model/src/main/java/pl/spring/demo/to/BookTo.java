@@ -45,4 +45,12 @@ public class BookTo implements IdAware {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public String toString() {
+		String authors = "";
+		for (AuthorTo author : this.authors) {
+			authors += author.getId() + " " + author.getFirstName() + " " + author.getLastName()+" ";
+		}
+		return id + " " + title + " " + authors.trim();
+	}
 }
