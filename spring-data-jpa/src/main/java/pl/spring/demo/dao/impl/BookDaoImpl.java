@@ -16,7 +16,6 @@ import pl.spring.demo.entity.BookEntity;
 @Component
 public class BookDaoImpl implements BookDao {
 
-	// TODO set - hashset, equals?
 	private final Set<BookEntity> ALL_BOOKS = new HashSet<>();
 
 	@Autowired
@@ -32,13 +31,31 @@ public class BookDaoImpl implements BookDao {
 	}
 
 	@Override
-	public List<BookEntity> findBookByTitle(String title) {
-		return null;
+	public List<BookEntity> findBookByTitle(String titlePrefix) {
+		List<BookEntity> bookList = new ArrayList<BookEntity>();
+		for (BookEntity book : ALL_BOOKS) {
+			if (book.getTitle().toUpperCase().startsWith(titlePrefix.toUpperCase())) {
+				bookList.add(book);
+			}
+		}
+		return bookList;
 	}
 
 	@Override
-	public List<BookEntity> findBooksByAuthor(String author) {
-		return null;
+	public List<BookEntity> findBooksByAuthor(String authorPrefix) {
+		String[] searchedAuthor = authorPrefix.toUpperCase().trim().split(" ");
+		List<BookEntity> bookList = new ArrayList<BookEntity>();
+		for (BookEntity book : ALL_BOOKS) {
+			String[] authors = book.getAuthors().toUpperCase().trim().split(" ");
+			for (String authorData : authors) {
+				for (String searchedAuthorData : searchedAuthor) {
+					if (authorData.startsWith(searchedAuthorData)) {
+						bookList.add(book);
+					}
+				}
+			}
+		}
+		return bookList;
 	}
 
 	@Override

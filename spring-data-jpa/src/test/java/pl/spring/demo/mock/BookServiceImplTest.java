@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import pl.spring.demo.converter.BookEntityToBookTo;
+import pl.spring.demo.converter.BookToToBookEntity;
 import pl.spring.demo.dao.BookDao;
 import pl.spring.demo.entity.BookEntity;
 import pl.spring.demo.service.impl.BookServiceImpl;
@@ -22,11 +23,14 @@ public class BookServiceImplTest {
     @Mock
     private BookDao bookDao;
     
-    private BookEntityToBookTo bookEntityConverter;
+    private BookEntityToBookTo bookEntityConverter = new BookEntityToBookTo();
+    private BookToToBookEntity bookToConverter = new BookToToBookEntity();
 
     @Before
     public void setUpt() {
         MockitoAnnotations.initMocks(this);
+        bookService.setBookEntityConverter(bookEntityConverter);
+        bookService.setBookToConverter(bookToConverter);
     }
 
     @Test

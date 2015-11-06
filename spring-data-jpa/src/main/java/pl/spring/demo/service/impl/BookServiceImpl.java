@@ -21,7 +21,7 @@ public class BookServiceImpl implements BookService {
 
 	@Autowired
 	private BookEntityToBookTo bookEntityConverter;
-	
+
 	@Autowired
 	private BookToToBookEntity bookToConverter;
 	
@@ -54,8 +54,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookTo saveBook(BookTo book) {
-    	bookEntityConverter = new BookEntityToBookTo();
-    	bookToConverter = new BookToToBookEntity();
     	BookEntity bookEntity = bookDao.save(bookToConverter.convert(book));
 		return bookEntityConverter.convert(bookEntity);
     }
@@ -63,4 +61,12 @@ public class BookServiceImpl implements BookService {
     public void setBookDao(BookDao bookDao) {
         this.bookDao = bookDao;
     }
+
+	public void setBookEntityConverter(BookEntityToBookTo bookEntityConverter) {
+		this.bookEntityConverter = bookEntityConverter;
+	}
+
+	public void setBookToConverter(BookToToBookEntity bookToConverter) {
+		this.bookToConverter = bookToConverter;
+	}
 }
