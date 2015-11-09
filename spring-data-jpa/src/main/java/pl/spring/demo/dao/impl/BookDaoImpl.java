@@ -10,11 +10,12 @@ import org.springframework.stereotype.Component;
 
 import pl.spring.demo.annotation.NullableId;
 import pl.spring.demo.common.Sequence;
+import pl.spring.demo.dao.AbstractDao;
 import pl.spring.demo.dao.BookDao;
 import pl.spring.demo.entity.BookEntity;
 
 @Component
-public class BookDaoImpl implements BookDao {
+public class BookDaoImpl extends AbstractDao implements BookDao {
 
 	private final Set<BookEntity> ALL_BOOKS = new HashSet<>();
 
@@ -44,7 +45,7 @@ public class BookDaoImpl implements BookDao {
 	@Override
 	public List<BookEntity> findBooksByAuthor(String authorPrefix) {
 		String[] searchedAuthor = authorPrefix.toUpperCase().trim().split(" ");
-		List<BookEntity> bookList = new ArrayList<BookEntity>();
+		Set<BookEntity> bookList = new HashSet<BookEntity>();
 		for (BookEntity book : ALL_BOOKS) {
 			String[] authors = book.getAuthors().toUpperCase().trim().split(" ");
 			for (String authorData : authors) {
@@ -55,7 +56,7 @@ public class BookDaoImpl implements BookDao {
 				}
 			}
 		}
-		return bookList;
+		return new ArrayList<BookEntity>(bookList);
 	}
 
 	@Override
@@ -63,10 +64,6 @@ public class BookDaoImpl implements BookDao {
 	public BookEntity save(BookEntity book) {
 		ALL_BOOKS.add(book);
 		return book;
-	}
-
-	public void setSequence(Sequence sequence) {
-		this.sequence = sequence;
 	}
 
 	private void addTestBooks() {

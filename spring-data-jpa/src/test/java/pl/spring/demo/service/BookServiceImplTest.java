@@ -11,10 +11,14 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import pl.spring.demo.converter.BookEntityToBookTo;
+import pl.spring.demo.dao.BookDao;
+import pl.spring.demo.entity.BookEntity;
 import pl.spring.demo.exception.BookNotNullIdException;
 import pl.spring.demo.to.BookTo;
 
@@ -24,6 +28,9 @@ public class BookServiceImplTest {
 
     @Autowired
     private BookService bookService;
+    
+    @Autowired
+    private BookEntityToBookTo bookEntityConverter;
 
     @Test
     public void testShouldFindAllBooks() {
@@ -32,7 +39,7 @@ public class BookServiceImplTest {
         // then
         assertNotNull(allBooks);
         assertFalse(allBooks.isEmpty());
-        assertEquals(6, allBooks.size());
+        assertTrue(6 <= allBooks.size());
     }
 
     @Test
@@ -76,6 +83,7 @@ public class BookServiceImplTest {
         List<BookTo> booksByAuthor = bookService.findBooksByAuthor(author);
         // then
         assertNotNull(booksByAuthor);
+        assertEquals(1, booksByAuthor.size());
         assertFalse(booksByAuthor.isEmpty());
     }
     
@@ -87,6 +95,7 @@ public class BookServiceImplTest {
         List<BookTo> booksByAuthor = bookService.findBooksByAuthor(author);
         // then
         assertNotNull(booksByAuthor);
+        assertEquals(1, booksByAuthor.size());
         assertFalse(booksByAuthor.isEmpty());
     }
     
@@ -109,5 +118,16 @@ public class BookServiceImplTest {
         bookService.saveBook(bookToSave);
         // then
         fail("test should throw BookNotNullIdException");
+    }
+    
+    @Test
+    public void testShouldSaveBook() {
+    	bookEntityConverter = new BookEntityToBookTo();
+        BookEntity book = new BookEntity(null, "title", "10 authorFirstName authorLastName");
+        bookService.saveBook(bookEntityConverter.convert(book));
+        List<BookTo> bookByAuthor = bookService.findBooksByAuthor("authorFirstName authorLastName");
+		assertNotNull(bookByAuthor);
+        assertEquals(1, bookByAuthor.size());
+        assertNotNull(bookByAuthor.get(0).getId());
     }
 }
