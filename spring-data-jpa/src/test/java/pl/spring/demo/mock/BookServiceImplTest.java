@@ -34,7 +34,7 @@ public class BookServiceImplTest {
     }
 
     @Test
-    public void testShouldSaveBook() {
+    public void testShouldSaveBookMock() {
         // given
     	bookEntityConverter = new BookEntityToBookTo();
         BookEntity book = new BookEntity(null, "title", "10 authorFirstName authorLastName");
