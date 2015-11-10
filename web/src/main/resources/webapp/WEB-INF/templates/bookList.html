@@ -14,10 +14,10 @@
 					<p>ID</p>
 				</th>
 				<th>
-					<p>Title</p>
+					<p>Tytuł</p>
 				</th>
 				<th>
-					<p>Author</p>
+					<p>Autor</p>
 				</th>
 				<th>
 					<p></p>
@@ -36,7 +36,7 @@
 					<p th:text="${book.authors}">author</p>
 				</td>
 				<td>
-					<p></p>
+					<p><a th:href="@{/books/delete(id=${book.id})}">Usuń książkę</a></p>
 				</td>
 			</tr>
 		</tbody>
