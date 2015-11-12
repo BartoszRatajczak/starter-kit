@@ -36,7 +36,7 @@
 					<p th:text="${book.authors}">author</p>
 				</td>
 				<td>
-					<p><a th:href="@{/books/delete(id=${book.id})}">Usuń książkę</a></p>
+					<p><a th:href="@{/books/delete(id=${book.id})}"> <button type="button" class="btn">Usuń książkę</button></a></p>
 				</td>
 			</tr>
 		</tbody>
