@@ -21,17 +21,17 @@ public class BookRestService {
     }
 
     @RequestMapping(value = "/book", method = RequestMethod.POST)
-    public BookTo saveBook(@RequestBody BookTo book) {
+    public BookTo saveBook(@RequestBody BookTo book) throws Exception {
         return bookService.saveBook(book);
     }
     
-    @RequestMapping(value = "/book-update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/book", method = RequestMethod.PUT)
     public BookTo updateBook(@RequestBody BookTo book) {
         return bookService.updateBook(book);
     }
     
-    @RequestMapping(value = "/book-delete", method = RequestMethod.DELETE)
-    public BookTo deleteBook(@RequestBody Long id) {
+    @RequestMapping(value = "/book/{id}", method = RequestMethod.DELETE)
+    public BookTo deleteBook(@PathVariable Long id) throws Exception {
         return bookService.deleteBook(id);
     }
 }

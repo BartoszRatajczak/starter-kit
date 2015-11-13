@@ -1,6 +1,8 @@
 package pl.spring.demo.web.rest;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -8,9 +10,9 @@ import java.io.File;
 import java.util.Arrays;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -87,8 +89,21 @@ public class BookRestServiceTest {
     }
     
     @Test
-    @Ignore
     public void testShouldDeleteBook() throws Exception {
-    	// TODO
+    	// given
+        BookTo bookTo = new BookTo(1L, "bookTitle", "Author");
+
+        ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+    	Mockito.when(bookService.deleteBook(captor.capture())).thenReturn(bookTo);
+
+        // when
+        ResultActions response = this.mockMvc.perform(delete("/book/" + bookTo.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(bookTo.getId().intValue()))
+                .andExpect(jsonPath("title").value(bookTo.getTitle()))
+                .andExpect(jsonPath("authors").value(bookTo.getAuthors()));
     }
 }
