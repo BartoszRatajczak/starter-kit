@@ -30,14 +30,8 @@ public class BookController {
 
 	@RequestMapping(value = "/books/delete", method = RequestMethod.GET)
 	public String deleteBook(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) throws UnsupportedEncodingException {
-		List<BookTo> bookList = bookService.findAllBooks();
-		BookTo book = new BookTo();
-		for (BookTo bookTo : bookList) {
-			if (bookTo.getId().equals(id)) {
-				book = bookService.deleteBook(id);
-			}
-		}
-		if (book.getId() == null) {
+		BookTo book = bookService.deleteBook(id);
+		if (book == null) {
 			redirectAttributes.addAttribute("id", id);
 			return "redirect:/bookDeleteError";
 		}
@@ -52,7 +46,7 @@ public class BookController {
 	}
 	
 	@RequestMapping(value = "/bookDeleteError", method = RequestMethod.GET)
-	public String bookDeleteError(@RequestParam("id") Long id, Map<String, Object> params) throws UnsupportedEncodingException {
+	public String bookDeleteError(@RequestParam("id") Long id, Map<String, Object> params) {
 		params.put("id", id);
 		return "wrongBookId";
 	}
