@@ -1,22 +1,27 @@
-package pl.spring.demo.entity;
+package pl.spring.demo.to;
 
-import java.io.Serializable;
+public class AuthorTo {
 
-import javax.persistence.Embeddable;
-
-@Embeddable
-public class PersonalData implements Serializable {
-
+	private Long id;
 	private String name;
 	private String surname;
 
-	protected PersonalData() {
+	public AuthorTo() {
 
 	}
 
-	public PersonalData(String name, String surname) {
+	public AuthorTo(Long id, String name, String surname) {
+		this.id = id;
 		this.name = name;
 		this.surname = surname;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {

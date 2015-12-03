@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Embedded;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.AttributeOverride;
@@ -27,13 +28,18 @@ public class AuthorEntity implements Serializable {
 	@AttributeOverrides({ @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false) ),
 			@AttributeOverride(name = "surname", column = @Column(name = "SURNAME", nullable = false) ) })
 	private PersonalData personalData;
-	// TODO
-	@ManyToMany
-	private List<BookEntity> books;
+	@ManyToMany(mappedBy = "authors")
+	private List<BookEntity> books = new ArrayList<>();
 
-	protected AuthorEntity(){
+	protected AuthorEntity() {
+
 	}
 	
+	public AuthorEntity(Long id, PersonalData personalData) {
+		this.id = id;
+		this.personalData = personalData;
+	}
+
 	public Long getId() {
 		return id;
 	}

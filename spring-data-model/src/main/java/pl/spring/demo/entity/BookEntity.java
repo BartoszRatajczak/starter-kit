@@ -2,22 +2,26 @@ package pl.spring.demo.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "BOOK")
 public class BookEntity implements Serializable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column(nullable = false, length = 50)
 	private String title;
-	// TODO
 	@ManyToMany
-	private List<AuthorEntity> authors;
+	@JoinTable(name = "BOOK_AUTHOR", joinColumns = {
+			@JoinColumn(name = "id_book", updatable = false, nullable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "id_author", updatable = false, nullable = false) })
+	private List<AuthorEntity> authors = new ArrayList<>();
 
-	// for hibernate
 	protected BookEntity() {
+
 	}
 
 	public BookEntity(Long id, String title, List<AuthorEntity> authors) {
