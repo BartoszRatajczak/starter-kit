@@ -10,7 +10,7 @@ import java.util.List;
 
 @Controller
 @ResponseBody
-public class BookRestService {
+public class InvestorRestService {
 
     @Autowired
     private BookService bookService;
